@@ -10,7 +10,9 @@ class OrderConfig(pydantic.BaseModel):
         description='Order ID'
     )
     name: str = pydantic.Field(
-        description='Product name'
+        description='Product name',
+        min_length=3,
+        max_length=48,
     )
     price: float = pydantic.Field(
         description='Product price (net)'
