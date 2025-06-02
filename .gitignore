@@ -237,3 +237,4 @@ cython_debug/
 .idea/
 
 *.xlsx
+docs.txt
