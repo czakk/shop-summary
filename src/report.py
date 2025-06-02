@@ -7,7 +7,7 @@ from datetime import datetime
 from pydantic import ValidationError
 
 from src.configs import OrderConfig
-from src.constans import DATA_DIR_NAME, TAX_RATE
+from src.constans import TAX_RATE
 from src.order import Order
 from src.utils import PROJECT_ROOT_PATH, VALIDATION_ERRORS_DIR_PATH
 

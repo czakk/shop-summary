@@ -143,6 +143,21 @@ files = [
 ]
 
 [[package]]
+name = "faker"
+version = "37.3.0"
+description = "Faker is a Python package that generates fake data for you."
+optional = false
+python-versions = ">=3.9"
+groups = ["main"]
+files = [
+    {file = "faker-37.3.0-py3-none-any.whl", hash = "sha256:48c94daa16a432f2d2bc803c7ff602509699fca228d13e97e379cd860a7e216e"},
+    {file = "faker-37.3.0.tar.gz", hash = "sha256:77b79e7a2228d57175133af0bbcdd26dc623df81db390ee52f5104d46c010f2f"},
+]
+
+[package.dependencies]
+tzdata = "*"
+
+[[package]]
 name = "fonttools"
 version = "4.57.0"
 description = "Tools to manipulate font files"
@@ -955,4 +970,4 @@ files = [
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.13,<4"
-content-hash = "f9298aafdfab6f28d39a7bd827f42ba8ab5e0d17efe31516a9eb78f0382cd9c2"
+content-hash = "d7be4e2b569c4dec7279604a5a6620ef0a68783d4749741547aec91d157ffc2e"
