@@ -238,3 +238,5 @@ cython_debug/
 
 *.xlsx
 docs.txt
+*.json
+*.pdf

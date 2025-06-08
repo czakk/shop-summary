@@ -16,6 +16,12 @@ dependencies = [
 
 [tool.poetry]
 package-mode = false
+packages = [
+    { include = "src" }
+]
+
+[tool.poetry.scripts]
+dummy = 'src.main:generate_fake_data'
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.3.5"

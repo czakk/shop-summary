@@ -77,16 +77,18 @@ class Report:
                 sheet_name=sheet_name,
                 index=False,
                 header=True,
-                startrow=1
+                startrow=1,
+                startcol=0
             )
             self.get_col_sum_by(col_name='name').to_excel(
                 writer,
                 sheet_name=sheet_name,
                 index=False,
                 header=True,
-                startrow=10
+                startrow=1,
+                startcol=len(self.data.columns) + 4
             )
 
             worksheet = writer.sheets[sheet_name]
             worksheet.cell(row=1, column=1).value = 'Summary for ' + str(self.date)
-            worksheet.cell(row=9, column=1).value = 'Most often purchased'
+            worksheet.cell(row=1, column=len(self.data.columns) + 5).value = 'Most often purchased'
