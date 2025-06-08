@@ -14,8 +14,8 @@ class OrderConfig(pydantic.BaseModel):
         min_length=3,
         max_length=48,
     )
-    price: float = pydantic.Field(
-        description='Product price (net)'
+    price: pydantic.PositiveFloat = pydantic.Field(
+        description='Product price (net)',
     )
     quantity: pydantic.PositiveInt = pydantic.Field(
         description='Product quantity',

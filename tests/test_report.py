@@ -5,24 +5,14 @@ import unittest.mock
 import pandas as pd
 import pytest
 
-from datetime import date
+from datetime import datetime
 
+from src.constans import DATE_FORMAT
 from src.report import Report
 from src.utils import PROJECT_ROOT_PATH, VALIDATION_ERRORS_DIR_PATH
 
 
 TEST_REPORT_PATH = pathlib.Path(PROJECT_ROOT_PATH / 'data' / '2025_01_01.xlsx')
-
-@pytest.fixture
-def data():
-    return pd.DataFrame(
-        {
-            'id': [1, 1, 2],
-            'name': ['Product1', 'Product2', 'Product1'],
-            'price': [100.0, 150.0, 100.0],
-            'quantity': [10, 20, 30]
-        }
-    )
 
 
 class TestReport:
@@ -41,15 +31,19 @@ class TestReport:
         )
 
         read_excel_mock.return_value = data
-        return Report(TEST_REPORT_PATH, date(2025, 1, 1))
+        return Report(TEST_REPORT_PATH, datetime.strptime(TEST_REPORT_PATH.stem, DATE_FORMAT).date())
 
-    def test_read_orders(
-        self,
-        data: pd.DataFrame,
-    ):
+    def test_read_orders(self):
+        data = pd.DataFrame(
+                    {
+                        'id': [1, 1, 2],
+                        'name': ['Product1', 'Product2', 'Product1'],
+                        'price': [100.0, 150.0, 100.0],
+                        'quantity': [10, 20, 30]
+                    }
+                )
         report = self.get_report()
         report.set_orders()
-
         assert len(report.orders) == 3
 
         for report_order, data_order in zip(report.orders, data.to_dict('records')):
@@ -162,19 +156,20 @@ class TestReport:
                 pd.DataFrame(
                     {
                         'id': [1, 2, 3],
-                        'name': ['Product1', '', 'Product2'],
-                        'price': [100, '', 150],
-                        'quantity': [1, '', 2]
+                        'name': ['Product1', np.nan, 'P2'],
+                        'price': [100, np.nan, 150],
+                        'quantity': [1, np.nan, 2]
                     }
                 ),
                 pd.DataFrame(
                     {
-                        'index': [1, 1, 1],
-                        'col': ['name', 'price', 'quantity'],
+                        'index': [1, 1, 1, 2],
+                        'col': ['name', 'price', 'quantity', 'name'],
                         'msg': [
-                            'String should have at least 3 characters',
-                            'Input should be a valid number, unable to parse string as a number',
-                            'Input should be a valid integer, unable to parse string as an integer',
+                            'Input should be a valid string',
+                            'Input should be greater than 0',
+                            'Input should be a finite number',
+                            'String should have at least 3 characters'
                         ]
                     }
                 )
@@ -322,4 +317,25 @@ class TestReport:
         report.save()
 
         excel_writer.assert_called_once_with(path=PROJECT_ROOT_PATH / 'reports' / '2025_01_01_report.xlsx')
+
+        expected_calls = [
+            unittest.mock.call(
+                unittest.mock.ANY,
+                sheet_name='Report',
+                index=False,
+                header=True,
+                startrow=1,
+                startcol=0
+            ),
+            unittest.mock.call(
+                unittest.mock.ANY,
+                sheet_name='Report',
+                index=False,
+                header=True,
+                startrow=1,
+                startcol=len(report.data.columns) + 4
+            )
+        ]
+
+        to_excel_mock.assert_has_calls(expected_calls)
         assert to_excel_mock.call_count == 2
