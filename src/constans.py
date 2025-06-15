@@ -24,3 +24,4 @@ TOTAL_TABLE_STYLE = [
     ('BACKGROUND', (1, 0), (-1, -1), colors.whitesmoke),
     ('GRID', (0, 0), (-1, -1), 1, colors.white)
 ]
+TEMP_DIR_NAME = 'temp'

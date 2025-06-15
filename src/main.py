@@ -1,7 +1,11 @@
 """Main script file."""
-import src.utils as utils
+
+import os
+import shutil
 
 from datetime import datetime
+
+import src.utils as utils
 
 from src.constans import DATE_FORMAT, XLSX_FILE_NAME_PATTERN
 from src.report import Report
@@ -13,6 +17,19 @@ def generate_fake_data():
     fake_data_report.to_excel(fake_data_path , index=False, header=True)
 
 def main():
+    os.makedirs(utils.TEMP_DIR_PATH, exist_ok=True)
+    for report_xlsx in utils.dir_files(
+            path=utils.PROJECT_ROOT_PATH / 'reports',
+            pattern=XLSX_FILE_NAME_PATTERN.replace('.xlsx', '_report.xlsx')
+    ):
+        os.remove(report_xlsx)
+
+    for report_xlsx in utils.dir_files(
+            path=utils.VALIDATION_ERRORS_DIR_PATH,
+            pattern=XLSX_FILE_NAME_PATTERN.replace('.xlsx', '_errors.json')
+    ):
+            os.remove(report_xlsx)
+
     reports = [
         Report(
             path=report,
@@ -26,6 +43,7 @@ def main():
     summary = Summary(reports=reports)
     summary.save()
 
+    shutil.rmtree(utils.TEMP_DIR_PATH)
 
 if __name__ == "__main__":
     main()

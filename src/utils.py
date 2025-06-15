@@ -7,12 +7,13 @@ import re
 from datetime import datetime
 from faker import Faker
 
-from src.constans import DATA_DIR_NAME, DATE_FORMAT
+from src.constans import DATA_DIR_NAME, DATE_FORMAT, TEMP_DIR_NAME
 
 
 PROJECT_ROOT_PATH = pathlib.Path(__file__).parent.parent.resolve()
 VALIDATION_ERRORS_DIR_PATH = PROJECT_ROOT_PATH / DATA_DIR_NAME / 'validation_errors'
 SUMMARY_PATH = pathlib.Path(PROJECT_ROOT_PATH / 'Summary.pdf')
+TEMP_DIR_PATH = pathlib.Path(PROJECT_ROOT_PATH / TEMP_DIR_NAME)
 
 faker = Faker()
 

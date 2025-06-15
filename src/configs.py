@@ -2,8 +2,6 @@
 
 import pydantic
 
-from datetime import time
-
 
 class OrderConfig(pydantic.BaseModel):
     id: pydantic.PositiveInt = pydantic.Field(
