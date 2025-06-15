@@ -1,6 +1,9 @@
 import pathlib
+import pytest
+import re
 import unittest.mock as mock
 
+from src.constans import XLSX_FILE_NAME_PATTERN
 import src.utils
 
 
@@ -12,3 +15,13 @@ def test_dir_files(iterdir_mock: mock.MagicMock):
     paths = src.utils.dir_files(pathlib.Path('./'), pattern)
 
     assert paths == [pathlib.Path('./dummy1.file'), pathlib.Path('./dummy2.file')]
+
+def test_generate_fake_data():
+    dummy_report, dummy_report_path = src.utils.generate_fake_data(10, 10)
+
+    assert len(dummy_report) == 10
+    assert re.match(XLSX_FILE_NAME_PATTERN, dummy_report_path.name)
+
+def test_generate_fake_data_raise_exception():
+    pytest.raises(ValueError, src.utils.generate_fake_data, -1, 10)
+
